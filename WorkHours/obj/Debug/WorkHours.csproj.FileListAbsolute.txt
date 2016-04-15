@@ -1,0 +1,10 @@
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\bin\Debug\WorkHours.exe.config
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.csprojResolveAssemblyReference.cache
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.FMain.resources
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.Properties.Resources.resources
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.VisualComponents.MyForm.resources
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.csproj.GenerateResource.Cache
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\bin\Debug\WorkHours.exe
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\bin\Debug\WorkHours.pdb
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.exe
+C:\Users\bobl395\Downloads\c\WorkHours\WorkHours\obj\Debug\WorkHours.pdb

@@ -1,0 +1,7 @@
+<Database>
+	<User name="BBA" dailyWorkHours="8">
+		<Month date="03/2016">
+			<Day date="28/3/2016" start="10:09" end="19:03" break="0:30" interruption="0:50" travel="0:00" />
+		</Month>
+	</User>
+</Database>
