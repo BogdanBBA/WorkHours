@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace WorkHours.VisualComponents
 {
-    public class TitleLabel : MyEuroBaseControl
+    public class TitleLabel : MyAppSpecificBaseControl
     {
         public static readonly Pair<int> BarHeight = new Pair<int>(2, 4);
         public const int TitleLabelHeight = 78;
@@ -16,10 +16,8 @@ namespace WorkHours.VisualComponents
         public TitleLabel()
             : base()
         {
-            this.title = new Tuple<Font, Brush, string>(StaticData.PVC != null ? new Font(StaticData.PVC.Families[StaticData.FontExo_Index], 27, FontStyle.Bold) : new Font("Arial", 32, FontStyle.Bold),
-                MyGUIs.Text.Normal.Brush, "[Title text]");
-            this.subtitle = new Tuple<Font, Brush, string>(StaticData.PVC != null ? new Font(StaticData.PVC.Families[StaticData.FontExo_Index], 14, FontStyle.Regular) : new Font("Arial", 15, FontStyle.Bold),
-                MyGUIs.Text.Highlighted.Brush, "[Subtitle text]");
+            this.title = new Tuple<Font, Brush, string>(new Font("Segoe UI", 27, FontStyle.Bold), MyGUIs.Text.Normal.Brush, "[Title text]");
+            this.subtitle = new Tuple<Font, Brush, string>(new Font("Segoe UI", 14, FontStyle.Regular), MyGUIs.Text.Highlighted.Brush, "[Subtitle text]");
             this.Size = new Size(400, TitleLabel.TitleLabelHeight);
         }
 

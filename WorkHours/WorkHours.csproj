@@ -65,7 +65,9 @@
     <Compile Include="VisualComponents\MyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VisualComponents\MyForm.Designer.cs" />
+    <Compile Include="VisualComponents\MyForm.Designer.cs">
+      <DependentUpon>MyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="VisualComponents\MyPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -76,6 +78,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="VisualComponents\MyScrollPanel.cs" />
+    <Compile Include="VisualComponents\MySelectView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="VisualComponents\MyToolStripMenu.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -97,7 +102,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="VisualComponents\MyForm.resx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

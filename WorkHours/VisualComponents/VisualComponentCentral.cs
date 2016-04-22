@@ -9,12 +9,12 @@ namespace WorkHours.VisualComponents
     /// <summary>
     /// Base control from which to derive app-specific visual controls.
     /// </summary>
-    public abstract class MyEuroBaseControl : Control
+    public abstract class MyAppSpecificBaseControl : Control
     {
         protected bool mouseIsOver = false;
         protected bool mouseIsClicked = false;
 
-        public MyEuroBaseControl()
+        public MyAppSpecificBaseControl()
             : base()
         {
             this.BackColor = MyGUIs.Background.Normal.Color;
@@ -62,7 +62,7 @@ namespace WorkHours.VisualComponents
         }
 
         public static List<TYPE> CreateControlCollection<TYPE>(ICollection<string> captions, EventHandler clickEventHandler, string namePrefix, ICollection<Tuple<string, object>> customProperties)
-            where TYPE : MyEuroBaseControl
+            where TYPE : MyAppSpecificBaseControl
         {
             List<TYPE> result = new List<TYPE>();
             int lastNumber = 0;
@@ -121,7 +121,7 @@ namespace WorkHours.VisualComponents
         /// <summary>Initializes to default values.</summary>
         public static void Reset()
         {
-            MyGUIs.Background = new Pair<ColorResource>(new ColorResource(ColorTranslator.FromHtml("#1D324A")), new ColorResource(ColorTranslator.FromHtml("#28405C")));
+            MyGUIs.Background = new Pair<ColorResource>(new ColorResource(ColorTranslator.FromHtml("#101010")), new ColorResource(ColorTranslator.FromHtml("#202020")));
             MyGUIs.Text = new Pair<ColorResource>(new ColorResource(Color.WhiteSmoke), new ColorResource(Color.OrangeRed));
             MyGUIs.Accent = new Pair<ColorResource>(new ColorResource(ColorTranslator.FromHtml("#FFFFFF")), new ColorResource(Color.OrangeRed));
             MyGUIs.Category = new Pair<ColorResource>(new ColorResource(ColorTranslator.FromHtml("#A0A0A0")), new ColorResource(ColorTranslator.FromHtml("#C0C0C0")));

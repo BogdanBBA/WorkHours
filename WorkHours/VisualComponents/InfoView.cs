@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace WorkHours.VisualComponents
 {
-    public class InfoView : MyEuroBaseControl
+    public class InfoView : MyAppSpecificBaseControl
     {
         public static readonly Pair<int> BarHeight = new Pair<int>(2, 4);
         public const int InfoViewHeight = 52;
@@ -16,10 +16,8 @@ namespace WorkHours.VisualComponents
         public InfoView()
             : base()
         {
-            this.description = new Tuple<Font, Brush, string>(StaticData.PVC != null ? new Font(StaticData.PVC.Families[StaticData.FontExoLight_Index], 13, FontStyle.Regular) : new Font("Arial", 12, FontStyle.Bold),
-                MyGUIs.Text.Normal.Brush, "#description");
-            this.text = new Tuple<Font, Brush, string>(StaticData.PVC != null ? new Font(StaticData.PVC.Families[StaticData.FontExoBold_Index], 22, FontStyle.Bold) : new Font("Arial", 20, FontStyle.Bold),
-                MyGUIs.Text.Highlighted.Brush, "#text");
+            this.description = new Tuple<Font, Brush, string>(new Font("Segoe UI", 13, FontStyle.Regular), MyGUIs.Text.Normal.Brush, "#description");
+            this.text = new Tuple<Font, Brush, string>(new Font("Segoe UI", 22, FontStyle.Bold), MyGUIs.Text.Highlighted.Brush, "#text");
             this.Size = new Size(250, InfoView.InfoViewHeight);
         }
 

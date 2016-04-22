@@ -14,6 +14,8 @@ namespace WorkHours.VisualComponents
     {
         protected static readonly Pen formAccentPen = new Pen(MyGUIs.Accent.Normal.Color, 2);
 
+        protected Point downPoint = Point.Empty;
+
         public MyForm()
             : base()
         {
@@ -36,6 +38,37 @@ namespace WorkHours.VisualComponents
 
         public virtual void RefreshInformation(object item)
         { }
+
+        public void RegisterControlsToMoveForm(params Control[] controls)
+        {
+            foreach (Control control in controls)
+            {
+                control.MouseDown += this.ForMoving_MouseDown;
+                control.MouseMove += this.ForMoving_MouseMove;
+                control.MouseUp += this.ForMoving_MouseUp;
+            }
+        }
+
+        private void ForMoving_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+            this.downPoint = new Point(e.X, e.Y);
+        }
+
+        private void ForMoving_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.downPoint == Point.Empty)
+                return;
+            this.Location = new Point(this.Left + e.X - this.downPoint.X, this.Top + e.Y - this.downPoint.Y);
+        }
+
+        private void ForMoving_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+            this.downPoint = Point.Empty;
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {

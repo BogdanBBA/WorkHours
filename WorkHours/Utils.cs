@@ -171,11 +171,14 @@ namespace WorkHours
         public static void AddAttribute(this XmlNode node, XmlDocument doc, string key, int value)
         { node.AddAttribute(doc, key, value.ToString()); }
 
-        public static void AddAttribute(this XmlNode node, XmlDocument doc, string key, ulong? value)
-        { node.AddAttribute(doc, key, value.HasValue ? value.Value.ToString() : null); }
+        public static void AddAttribute(this XmlNode node, XmlDocument doc, string key, long value)
+        { node.AddAttribute(doc, key, value.ToString()); }
 
-        public static void AddAttribute(this XmlNode node, XmlDocument doc, string key, DateTime? value)
-        { node.AddAttribute(doc, key, value.HasValue ? value.Value.ToString() : null); }
+        public static void AddAttribute(this XmlNode node, XmlDocument doc, string key, DateTime value)
+        { node.AddAttribute(doc, key, value.ToString("d'/'m'/'yyyy")); }
+
+        public static void AddAttribute(this XmlNode node, XmlDocument doc, string key, TimeSpan value)
+        { node.AddAttribute(doc, key, value.Hours.ToString().PadLeft(2, '0') + ":" + value.Minutes.ToString().PadLeft(2, '0')); }
 
         public static void AddAttribute(this XmlNode node, XmlDocument doc, Pair<ColorResource> value)
         {
@@ -325,7 +328,7 @@ namespace WorkHours
             return newBitmap;
         }
 
-        public static void CheckItemAndUncheckAllOthers<TYPE>(this ICollection<TYPE> controls, TYPE controlToCheck) where TYPE : MyEuroBaseControl
+        public static void CheckItemAndUncheckAllOthers<TYPE>(this ICollection<TYPE> controls, TYPE controlToCheck) where TYPE : MyAppSpecificBaseControl
         {
             foreach (TYPE control in controls)
                 control.Checked = control.Equals(controlToCheck);
@@ -363,140 +366,6 @@ namespace WorkHours
                 sb = sb.Remove(sb.Length - separator.Length, separator.Length);
             return sb.ToString();
         }
-
-        public static void SortMatchesChronologically(this ListOfIDObjects<Match> matches)
-        {
-            for (int iM = 0; iM < matches.Count - 1; iM++)
-                for (int jm = iM + 1; jm < matches.Count; jm++)
-                    if (matches[iM].When.CompareTo(matches[jm].When) > 0)
-                        matches.SwapItemsAtPositions(iM, jm);
-        }
-
-        /// <summary>Searches the group matches of this list and finds the one played between the given teams, then returns the WhichTeamWon property value of the FinalScore of that match, 
-        /// for the order in which the two team parameters were passed (-1 for team A, 0 for draw, 1 for team B). Note that if the match has not been played or cannot be found, the returned value will be -2.</summary>
-        public static int WhoWonGroupMatchBetween(this List<Match> matches, Team teamA, Team teamB)
-        {
-            foreach (Match match in matches)
-                if (match.IsGroupMatch)
-                    if (match.Teams.Home.Equals(teamA) && match.Teams.Away.Equals(teamB))
-                        return match.Scoreboard.Played ? match.Scoreboard.FinalScore.WhichTeamWon : -2;
-                    else if (match.Teams.Home.Equals(teamB) && match.Teams.Away.Equals(teamA))
-                        return match.Scoreboard.Played ? -match.Scoreboard.FinalScore.WhichTeamWon : -2;
-            return -2;
-        }
-
-        public static MatchScoreboard GetRandomResult(bool canEndInDraw)
-        {
-            List<HalfScoreboard> halves = new List<HalfScoreboard>();
-            halves.Add(new HalfScoreboard(Utils.Random.Next(5), Utils.Random.Next(5)));
-            halves.Add(new HalfScoreboard(Utils.Random.Next(5), Utils.Random.Next(5)));
-            MatchScoreboard result = new MatchScoreboard(halves);
-            if (canEndInDraw || result.FinalScore.WhichTeamWon != 0)
-                return result;
-            halves.Add(new HalfScoreboard(Utils.Random.Next(3), Utils.Random.Next(3)));
-            halves.Add(new HalfScoreboard(Utils.Random.Next(3), Utils.Random.Next(3)));
-            result.SetHalves(halves);
-            if (result.FinalScore.WhichTeamWon != 0)
-                return result;
-            int home = 0, away = 0;
-            while (home == away)
-            {
-                home = Utils.Random.Next(6);
-                away = Utils.Random.Next(6);
-            }
-            halves.Add(new HalfScoreboard(home, away));
-            result.SetHalves(halves);
-            return result;
-        }
-
-        /// <summary>Searches this list of matches and returns a sublist containing all items that are relevant to the given parameter. The parameter can be an instance of Venue, Team, Group, DateTime, string (category) or bool (played).</summary>
-        public static ListOfIDObjects<Match> GetMatchesBy(this ListOfIDObjects<Match> matches, object whatever)
-        {
-            ListOfIDObjects<Match> result = new ListOfIDObjects<Match>();
-
-            if (whatever is Venue)
-            {
-                Venue venue = whatever as Venue;
-                foreach (Match match in matches)
-                    if (match.Where.Equals(venue))
-                        result.Add(match);
-            }
-            else if (whatever is Team)
-            {
-                Team team = whatever as Team;
-                foreach (Match match in matches)
-                    if ((match.Teams.Home != null && match.Teams.Home.Equals(team)) || (match.Teams.Away != null && match.Teams.Away.Equals(team)))
-                        result.Add(match);
-            }
-            else if (whatever is Group)
-            {
-                Group group = whatever as Group;
-                foreach (Match match in matches)
-                    if (match.IsGroupMatch && match.Category.Split(':')[1].Equals(group.ID))
-                        result.Add(match);
-            }
-            else if (whatever is DateTime)
-            {
-                DateTime date = (DateTime) whatever;
-                foreach (Match match in matches)
-                    if (match.When.Date.Equals(date.Date))
-                        result.Add(match);
-            }
-            else if (whatever is string)
-            {
-                string category = whatever as string;
-                foreach (Match match in matches)
-                    if (match.Category.Contains(category))
-                        result.Add(match);
-            }
-            else if (whatever is bool)
-            {
-                bool played = (bool) whatever;
-                foreach (Match match in matches)
-                    if (match.Scoreboard.Played == played)
-                        result.Add(match);
-            }
-
-            return result;
-        }
-    }
-
-    public static class StaticData
-    {
-        public static SortedDictionary<string, Bitmap> Images { get; private set; }
-        public static PrivateFontCollection PVC { get; private set; }
-        public static int FontExoLight_Index { get; private set; }
-        public static int FontExo_Index { get; private set; }
-        public static int FontExoBold_Index { get; private set; }
-
-        static StaticData()
-        {
-            StaticData.Images = new SortedDictionary<string, Bitmap>();
-        }
-
-        public static string LoadData()
-        {
-            try
-            {
-                StaticData.Images.Add(Paths.LogoImageFile, new Bitmap(Paths.LogoImageFile));
-                StaticData.Images.Add(Paths.UnknownTeamImageFile, new Bitmap(Paths.UnknownTeamImageFile));
-                StaticData.Images.Add(Paths.KnockoutImageFile, new Bitmap(Paths.KnockoutImageFile));
-
-                StaticData.PVC = new PrivateFontCollection();
-                StaticData.PVC.AddFontFile(Paths.FontsFolder + "exo2-xlite.ttf");
-                StaticData.FontExoLight_Index = 0;
-                StaticData.PVC.AddFontFile(Paths.FontsFolder + "exo2.ttf");
-                StaticData.FontExo_Index = 0;
-                StaticData.PVC.AddFontFile(Paths.FontsFolder + "exo2-bold.ttf");
-                StaticData.FontExoBold_Index = 0;
-
-                return "";
-            }
-            catch (Exception E)
-            {
-                return "ERROR: StaticImages.LoadImages()\n\n" + E.ToString();
-            }
-        }
     }
 
     /// <summary>
@@ -505,21 +374,11 @@ namespace WorkHours
     public static class Paths
     {
         public static readonly string ProgramFilesFolder = Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName + "/program-files/";
-        public static readonly string ResourcesFolder = ProgramFilesFolder + "resources/";
-        public static readonly string FontsFolder = ResourcesFolder + "fonts/";
-        public static readonly string FlagsFolder = ProgramFilesFolder + "flags/";
-        public static readonly string CitiesFolder = ProgramFilesFolder + "cities/";
-        public static readonly string StadiumLocationsFolder = ProgramFilesFolder + "stadium-locations/";
-        public static readonly string StadiumOutsidesFolder = ProgramFilesFolder + "stadiums-outside/";
-        public static readonly string StadiumInsidesFolder = ProgramFilesFolder + "stadiums-inside/";
 
         public static readonly string DatabaseFile = ProgramFilesFolder + "database.xml";
-        public static readonly string LogoImageFile = ResourcesFolder + "logo.png";
-        public static readonly string UnknownTeamImageFile = ResourcesFolder + "unknownTeam.png";
-        public static readonly string KnockoutImageFile = ResourcesFolder + "knockout.png";
 
-        public static readonly string[] Folders = { ProgramFilesFolder, ResourcesFolder, FlagsFolder, CitiesFolder, StadiumLocationsFolder, StadiumOutsidesFolder, StadiumInsidesFolder };
-        public static readonly string[] Files = { DatabaseFile, LogoImageFile, UnknownTeamImageFile };
+        public static readonly string[] Folders = { ProgramFilesFolder };
+        public static readonly string[] Files = { DatabaseFile };
 
         public static string CheckPaths(bool tryToCreateMissingFolders)
         {

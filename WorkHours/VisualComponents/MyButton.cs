@@ -8,7 +8,7 @@ namespace WorkHours.VisualComponents
     /// <summary>
     /// Custom-configured BBA button.
     /// </summary>
-    public class MyButton : MyEuroBaseControl
+    public class MyButton : MyAppSpecificBaseControl
     {
         public static readonly Pair<int> BarHeight = new Pair<int>(2, 4);
 
@@ -16,7 +16,7 @@ namespace WorkHours.VisualComponents
             : base()
         {
             this.Cursor = Cursors.Hand;
-            this.Font = StaticData.PVC != null ? new Font(StaticData.PVC.Families[StaticData.FontExo_Index], 18f, FontStyle.Bold) : new Font("Arial", 10);
+            this.Font = new Font("Segoe UI", 12);
         }
 
         private bool drawBar = true;
