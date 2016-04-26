@@ -35,12 +35,6 @@ namespace WorkHours.VisualComponents
             base.OnResize(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs mevent)
-        {
-            this.startX = mevent.X;
-            base.OnMouseDown(mevent);
-        }
-
         private RectangleF GetBoundsOfCell(int cellIndex)
         {
             return new RectangleF(cellIndex * cellWidth + cellWidth / 4, 0, cellWidth / 2, this.Height);
@@ -49,6 +43,14 @@ namespace WorkHours.VisualComponents
         private int GetCellIndexOfXCoordinate(int x)
         {
             return (int) (x / this.cellWidth);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs mevent)
+        {
+            this.selectedDays.Clear();
+            this.Invalidate();
+            this.startX = mevent.X;
+            base.OnMouseDown(mevent);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
